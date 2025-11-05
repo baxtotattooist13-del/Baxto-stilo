@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAXTO Stilo - Portafolio de Tatuajes Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .gothic-title {
+            font-family: 'Metal Mania', cursive;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .gothic-subtitle {
+            font-family: 'Creepster', cursive;
+            letter-spacing: 1px;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+
+        .cyan-glow {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .cyan-border {
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .cyan-hover:hover {
+            background-color: #00ffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .floating-button {
+            position: fixed;
+            z-index: 50;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #00ffff;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .carousel-slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #00ffff;
+        }
+
+        .carousel-dot.active {
+            background-color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 255, 255, 0.2);
+            border: 2px solid #00ffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #00ffff;
+            transition: all 0.3s ease;
+            z-index: 15;
+        }
+
+        .carousel-arrow:hover {
+            background-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+        }
+
+        .carousel-arrow.prev {
+            left: 10px;
+        }
+
+        .carousel-arrow.next {
+            right: 10px;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            margin: 60px 0;
+        }
+
+        .cta-button {
+            background-color: transparent;
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            background-color: #00ffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .cta-button-primary {
+            background-color: #00ffff;
+            color: #0a0a0a;
+            border-color: #00ffff;
+        }
+
+        .cta-button-primary:hover {
+            background-color: transparent;
+            color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        .glass-effect {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .tattoo-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tattoo-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .social-dock {
+            position: fixed;
+            right: 20px;
+            bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .quick-contact-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            background-color: #00ffff;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 50%;
+            font-size: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            z-index: 60;
+            font-weight: bold;
+        }
+
+        .quick-contact-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+        }
+
+        .header-icon {
+            display: inline-block;
+            margin-right: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            z-index: 40;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .social-dock {
+                right: 10px;
+                bottom: 90px;
+                gap: 10px;
+            }
+
+            .floating-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .quick-contact-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+                right: 10px;
+                bottom: 10px;
+            }
+
+            .gothic-title {
+                font-size: 32px;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+
+        .tattoo-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .blog-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-left: 4px solid #00ffff;
+            padding: 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .blog-date {
+            color: #00ffff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .care-item {
+            background-color: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .care-item:hover {
+            background-color: rgba(0, 255, 255, 0.1);
+            border-color: #00ffff;
+        }
+
+        .care-item h4 {
+            color: #00ffff;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas para fondo 3D -->
+    <div id="canvas-container"></div>
+
+    <!-- Indicador de scroll -->
+    <div class="scroll-indicator">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ffff" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="glass-effect py-8 px-4 md:px-8 sticky top-0 z-30">
+            <div class="max-w-6xl mx-auto flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="header-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#00ffff" stroke-width="2">
+                            <circle cx="20" cy="20" r="18"></circle>
+                            <line x1="20" y1="5" x2="20" y2="35"></line>
+                            <line x1="5" y1="20" x2="35" y2="20"></line>
+                            <circle cx="20" cy="20" r="3" fill="#00ffff"></circle>
+                        </svg>
+                    </div>
+                    <h1 class="gothic-title text-3xl md:text-4xl">
+                        <span class="text-white">BAXTO</span>
+                        <span class="cyan-glow"> Stilo</span>
+                    </h1>
+                </div>
+                <nav class="hidden md:flex gap-6">
+                    <a href="#portfolio" class="text-white hover:text-cyan-400 transition">Portfolio</a>
+                    <a href="#about" class="text-white hover:text-cyan-400 transition">Acerca de</a>
+                    <a href="#blog" class="text-white hover:text-cyan-400 transition">Blog</a>
+                    <a href="#care" class="text-white hover:text-cyan-400 transition">Cuidados</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center justify-center px-4 py-20">
+            <div class="text-center max-w-4xl mx-auto fade-in">
+                <h2 class="gothic-title text-5xl md:text-7xl mb-6 leading-tight">
+                    <span class="text-white">BAXTO</span>
+                    <span class="cyan-glow"> Stilo</span>
+                </h2>
+                <p class="gothic-subtitle text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+                    "Cada historia en BAXTO Stilo se transforma en obras de arte que se lucen en la piel."
+                </p>
+                <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+                    Bienvenido al mundo del tatuaje profesional donde la creatividad, la precisión y la pasión se unen para crear obras maestras que perduran en el tiempo.
+                </p>
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <a href="https://wa.me/525512345678" class="cta-button-primary cta-button">
+                        Cotiza Ahora
+                    </a>
+                    <a href="https://wa.me/525512345678" class="cta-button">
+                        Agenda Ahora
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="py-20 px-4 md:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="gothic-title text-4xl md:text-5xl mb-4 cyan-glow text-center">Mi Portafolio</h2>
+                <p class="text-center text-gray-400 mb-12">Explora mis trabajos más destacados</p>
+
+                <div class="carousel-container glass-effect rounded-lg overflow-hidden">
+                    <div class="carousel-slides">
+                        <!-- Slide 1 -->
+                        <div class="carousel-slide active">
+                            <div class="grid md:grid-cols-2 gap-8 p-8">
+                                <div>
+                                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&h=500&fit=crop" alt="Tatuaje Chicano" class="tattoo-image">
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <h3 class="text-2xl font-bold mb-4 cyan-glow">Águila Chicana</h3>
+                                    <p class="text-gray-300 mb-6">
+                                        Un diseño clásico del arte chicano que representa la libertad y la fuerza. Realizado con líneas precisas y sombreado detallado. Este trabajo combina la tradición con técnicas modernas de tatuaje.
+                                    </p>
+                                    <div class="flex gap-4">
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Chicano</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Grande</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Color</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="carousel-slide">
+                            <div class="grid md:grid-cols-2 gap-8 p-8">
+                                <div>
+                                    <img src="https://images.unsplash.com/photo-1598808503676-6b6b0d11b541?w=500&h=500&fit=crop" alt="Tatuaje Rosa" class="tattoo-image">
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <h3 class="text-2xl font-bold mb-4 cyan-glow">Rosa Gótica</h3>
+                                    <p class="text-gray-300 mb-6">
+                                        Una rosa delicada con toques góticos que representa la belleza en la oscuridad. Trabajo realizado con tinta negra y gris, perfecto para quienes buscan elegancia y misterio en su tatuaje.
+                                    </p>
+                                    <div class="flex gap-4">
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Gótico</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Mediano</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">B&N</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="carousel-slide">
+                            <div class="grid md:grid-cols-2 gap-8 p-8">
+                                <div>
+                                    <img src="https://images.unsplash.com/photo-1590080876-a371a6b6d7d5?w=500&h=500&fit=crop" alt="Tatuaje Calavera" class="tattoo-image">
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <h3 class="text-2xl font-bold mb-4 cyan-glow">Calavera Mexicana</h3>
+                                    <p class="text-gray-300 mb-6">
+                                        Un icónico diseño de calavera mexicana con flores y detalles ornamentales. Este tatuaje celebra la vida y la muerte, con colores vibrantes que hacen que cada línea cobre vida en la piel.
+                                    </p>
+                                    <div class="flex gap-4">
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Mexicano</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Grande</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Color</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4 -->
+                        <div class="carousel-slide">
+                            <div class="grid md:grid-cols-2 gap-8 p-8">
+                                <div>
+                                    <img src="https://images.unsplash.com/photo-1585829365519-c21ea54cb626?w=500&h=500&fit=crop" alt="Tatuaje Geométrico" class="tattoo-image">
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <h3 class="text-2xl font-bold mb-4 cyan-glow">Geometría Sagrada</h3>
+                                    <p class="text-gray-300 mb-6">
+                                        Diseño geométrico moderno que fusiona la precisión matemática con el arte del tatuaje. Líneas limpias y proporciones perfectas crean un patrón hipnotizante que representa el equilibrio y la armonía.
+                                    </p>
+                                    <div class="flex gap-4">
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Geométrico</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">Pequeño</span>
+                                        <span class="text-sm bg-cyan-900 bg-opacity-50 px-3 py-1 rounded text-cyan-300">B&N</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controles del carrusel -->
+                    <div class="carousel-arrow prev" onclick="previousSlide()">❮</div>
+                    <div class="carousel-arrow next" onclick="nextSlide()">❯</div>
+                    <div class="carousel-nav">
+                        <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                        <div class="carousel-dot" onclick="goToSlide(1)"></div>
+                        <div class="carousel-dot" onclick="goToSlide(2)"></div>
+                        <div class="carousel-dot" onclick="goToSlide(3)"></div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="https://wa.me/525512345678" class="cta-button-primary cta-button">
+                        Ver Más Trabajos
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 px-4 md:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="gothic-title text-4xl md:text-5xl mb-6 cyan-glow">Acerca de Mí</h2>
+                        <p class="text-gray-300 mb-4 leading-relaxed">
+                            Soy Baxto, un artista del tatuaje con más de 10 años de experiencia en el mundo del arte corporal. Mi pasión por el diseño chicano y gótico me ha llevado a perfeccionar técnicas que combinan la tradición con la innovación moderna.
+                        </p>
+                        <p class="text-gray-300 mb-4 leading-relaxed">
+                            Cada tatuaje que realizo es una conversación entre el cliente y yo. Escucho tus historias, tus sueños y tus visiones, y las transformo en obras de arte que perduran en tu piel para toda la vida.
+                        </p>
+                        <p class="text-gray-300 mb-6 leading-relaxed">
+                            Mi estudio está equipado con la tecnología más avanzada en máquinas de tatuaje, tintas de la más alta calidad y un ambiente limpio y profesional donde tu comodidad y seguridad son mi prioridad.
+                        </p>
+                        <div class="flex gap-4">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold cyan-glow">10+</div>
+                                <div class="text-sm text-gray-400">Años de Experiencia</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold cyan-glow">500+</div>
+                                <div class="text-sm text-gray-400">Tatuajes Realizados</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold cyan-glow">100%</div>
+                                <div class="text-sm text-gray-400">Satisfacción</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-effect p-8 rounded-lg">
+                        <img src="https://images.unsplash.com/photo-1552058544-f6b08422138a?w=500&h=500&fit=crop" alt="Baxto en el estudio" class="rounded-lg mb-6">
+                        <h3 class="text-xl font-bold mb-4 cyan-glow">Mi Visión</h3>
+                        <p class="text-gray-300 mb-6">
+                            Creo que el tatuaje es una forma de expresión personal que merece ser tratada con respeto y profesionalismo. Mi objetivo es crear un espacio donde cada cliente se sienta cómodo, escuchado y valorado.
+                        </p>
+                        <p class="text-gray-300">
+                            Cada línea, cada sombra, cada color tiene un propósito. No solo hago tatuajes, creo historias que se llevan en la piel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Blog Section -->
+        <section id="blog" class="py-20 px-4 md:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="gothic-title text-4xl md:text-5xl mb-4 cyan-glow text-center">Blog</h2>
+                <p class="text-center text-gray-400 mb-12">Consejos, historias y tendencias del mundo del tatuaje</p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="blog-card">
+                        <div class="blog-date">5 de Noviembre, 2025</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4">Tendencias de Tatuajes 2025</h3>
+                        <p class="text-gray-300 mb-6">
+                            Este año hemos visto un resurgimiento del arte chicano clásico combinado con técnicas modernas. Los diseños geométricos y las líneas minimalistas también están ganando popularidad entre los clientes más jóvenes.
+                        </p>
+                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-date">28 de Octubre, 2025</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4">La Historia del Tatuaje Chicano</h3>
+                        <p class="text-gray-300 mb-6">
+                            El tatuaje chicano tiene raíces profundas en la cultura mexicana y la historia de resistencia. Desde sus orígenes en las prisiones hasta convertirse en un arte respetado, esta tradición sigue evolucionando.
+                        </p>
+                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-date">15 de Octubre, 2025</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4">Cómo Elegir tu Primer Tatuaje</h3>
+                        <p class="text-gray-300 mb-6">
+                            Elegir tu primer tatuaje es una decisión importante. Te doy algunos consejos para asegurar que tu experiencia sea memorable y que el resultado sea exactamente lo que imaginaste.
+                        </p>
+                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-date">1 de Octubre, 2025</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4">Innovaciones en Máquinas de Tatuaje</h3>
+                        <p class="text-gray-300 mb-6">
+                            La tecnología en el mundo del tatuaje ha avanzado significativamente. Las nuevas máquinas rotativas ofrecen mayor precisión y comodidad tanto para el artista como para el cliente.
+                        </p>
+                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="https://wa.me/525512345678" class="cta-button">
+                        Ver Todos los Artículos
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Care Section -->
+        <section id="care" class="py-20 px-4 md:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="gothic-title text-4xl md:text-5xl mb-4 cyan-glow text-center">Cuidados de Tatuajes</h2>
+                <p class="text-center text-gray-400 mb-12">Información importante para mantener tu tatuaje en perfecto estado</p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="care-item">
+                        <h4>🧼 Primeras 24 Horas</h4>
+                        <p class="text-gray-300">
+                            Mantén tu tatuaje limpio y seco. Lava suavemente con agua tibia y jabón neutro. No sumerjas el tatuaje en agua (piscinas, baños, mar) durante al menos 2 semanas.
+                        </p>
+                    </div>
+
+                    <div class="care-item">
+                        <h4>💧 Hidratación</h4>
+                        <p class="text-gray-300">
+                            Aplica una crema cicatrizante recomendada 2-3 veces al día durante las primeras 2 semanas. Mantén la piel hidratada pero no excesivamente húmeda.
+                        </p>
+                    </div>
+
+                    <div class="care-item">
+                        <h4>☀️ Protección Solar</h4>
+                        <p class="text-gray-300">
+                            Evita la exposición directa al sol durante al menos 4 semanas. Después, siempre usa protector solar SPF 50+ en tu tatuaje para mantener los colores vibrantes.
+                        </p>
+                    </div>
+
+                    <div class="care-item">
+                        <h4>🚫 Qué Evitar</h4>
+                        <p class="text-gray-300">
+                            No rasques ni peles tu tatuaje. Evita ropa ajustada sobre el área tatuada. No uses productos con alcohol o peróxido. Evita ejercicio intenso durante 1 semana.
+                        </p>
+                    </div>
+
+                    <div class="care-item">
+                        <h4>🩹 Cicatrización Normal</h4>
+                        <p class="text-gray-300">
+                            Es normal que tu tatuaje se vea opaco durante la cicatrización. Esto es temporal. La mayoría de tatuajes cicatrizan completamente en 2-3 semanas.
+                        </p>
+                    </div>
+
+                    <div class="care-item">
+                        <h4>⚠️ Cuándo Contactarme</h4>
+                        <p class="text-gray-300">
+                            Si experimentas enrojecimiento excesivo, hinchazón, pus o fiebre, contacta inmediatamente. Estos pueden ser signos de infección que requieren atención profesional.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-effect p-8 rounded-lg mt-12">
+                    <h3 class="text-2xl font-bold mb-4 cyan-glow">Cuidado a Largo Plazo</h3>
+                    <p class="text-gray-300 mb-4">
+                        Para mantener tu tatuaje hermoso durante años, sigue estos consejos:
+                    </p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>✓ Usa protector solar diariamente en tu tatuaje</li>
+                        <li>✓ Mantén tu piel hidratada con cremas de calidad</li>
+                        <li>✓ Evita cambios drásticos de peso que puedan distorsionar el diseño</li>
+                        <li>✓ Considera retoques cada 5-10 años para mantener la vibrancia</li>
+                        <li>✓ Consulta con tu artista si notas cambios en el tatuaje</li>
+                    </ul>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="https://wa.me/525512345678" class="cta-button-primary cta-button">
+                        Contacta para Más Información
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="glass-effect py-12 px-4 md:px-8 mt-20">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div>
+                        <h3 class="gothic-title text-2xl mb-4 cyan-glow">BAXTO Stilo</h3>
+                        <p class="text-gray-400">
+                            Transformando historias en obras de arte que perduran en la piel.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4 cyan-glow">Enlaces Rápidos</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#portfolio" class="hover:text-cyan-400 transition">Portfolio</a></li>
+                            <li><a href="#about" class="hover:text-cyan-400 transition">Acerca de</a></li>
+                            <li><a href="#blog" class="hover:text-cyan-400 transition">Blog</a></li>
+                            <li><a href="#care" class="hover:text-cyan-400 transition">Cuidados</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4 cyan-glow">Contacto</h4>
+                        <p class="text-gray-400 mb-2">📱 +52 55 1234 5678</p>
+                        <p class="text-gray-400 mb-4">📧 info@baxtostilo.com</p>
+                        <a href="https://wa.me/525512345678" class="cta-button text-sm">
+                            WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="border-t border-cyan-900 pt-8 text-center text-gray-500">
+                    <p>&copy; 2025 BAXTO Stilo. Todos los derechos reservados. | Diseño y Desarrollo Profesional</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Social Dock -->
+    <div class="social-dock">
+        <a href="https://instagram.com" target="_blank" class="floating-button" title="Instagram">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ffff" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <circle cx="17.5" cy="6.5" r="1.5" fill="#00ffff"></circle>
+            </svg>
+        </a>
+        <a href="https://facebook.com" target="_blank" class="floating-button" title="Facebook">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ffff" stroke-width="2">
+                <path d="M18 2h-3a6 6 0 0 0-6 6v3H7v4h2v8h4v-8h3l1-4h-4V8a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+        </a>
+        <a href="https://tiktok.com" target="_blank" class="floating-button" title="TikTok">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ffff" stroke-width="2">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Quick Contact Button -->
+    <a href="https://wa.me/525512345678" target="_blank" class="quick-contact-btn" title="Contacto Rápido por WhatsApp">
+        💬
+    </a>
+
+    <script src="js/three-background.js"></script>
+    <script src="js/carousel.js"></script>
+    <script src="js/interactions.js"></script>
+</body>
+</html>
