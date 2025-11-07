@@ -8,6 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
+        @font-face {
+            font-family: 'Chicano';
+            src: url('fonts/Chicano.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +22,7 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Chicano', 'Roboto', sans-serif;
             background-color: #0a0a0a;
             color: #ffffff;
             overflow-x: hidden;
@@ -106,6 +113,21 @@
             to {
                 opacity: 1;
             }
+        }
+
+        @keyframes fadeInLogo {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fadeInLogo {
+            animation: fadeInLogo 1.2s ease-out forwards;
         }
 
         .carousel-nav {
@@ -431,6 +453,10 @@
         <!-- Hero Section -->
         <section class="min-h-screen flex items-center justify-center px-4 py-20">
             <div class="text-center max-w-4xl mx-auto fade-in">
+                <!-- Logo -->
+                <div class="mb-8 flex justify-center">
+                    <img src="assets/logo-baxto.png" alt="BAXTO Stilo Logo" class="w-48 md:w-64 h-auto animate-fadeInLogo" style="filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.6));">
+                </div>
                 <h2 class="gothic-title text-5xl md:text-7xl mb-6 leading-tight">
                     <span class="text-white">BAXTO</span>
                     <span class="cyan-glow"> Stilo</span>
@@ -442,10 +468,10 @@
                     Bienvenido al mundo del tatuaje profesional donde la creatividad, la precisión y la pasión se unen para crear obras maestras que perduran en el tiempo.
                 </p>
                 <div class="flex flex-col md:flex-row gap-4 justify-center">
-                    <a href="https://wa.me/525512345678" class="cta-button-primary cta-button">
+                    <a href="https://wa.me/529842562365" class="cta-button-primary cta-button">
                         Cotiza Ahora
                     </a>
-                    <a href="https://wa.me/525512345678" class="cta-button">
+                    <a href="https://wa.me/529842562365" class="cta-button">
                         Agenda Ahora
                     </a>
                 </div>
@@ -464,7 +490,7 @@
                         <div class="carousel-slide active">
                             <div class="grid md:grid-cols-2 gap-8 p-8">
                                 <div>
-                                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&h=500&fit=crop" alt="Tatuaje Chicano" class="tattoo-image">
+                                    <img src="assets/galeria/chicano-1.jpg" alt="Tatuaje Chicano" class="tattoo-image">
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3 class="text-2xl font-bold mb-4 cyan-glow">Águila Chicana</h3>
@@ -484,7 +510,7 @@
                         <div class="carousel-slide">
                             <div class="grid md:grid-cols-2 gap-8 p-8">
                                 <div>
-                                    <img src="https://images.unsplash.com/photo-1598808503676-6b6b0d11b541?w=500&h=500&fit=crop" alt="Tatuaje Rosa" class="tattoo-image">
+                                    <img src="assets/galeria/gotico-1.jpg" alt="Tatuaje Rosa" class="tattoo-image">
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3 class="text-2xl font-bold mb-4 cyan-glow">Rosa Gótica</h3>
@@ -504,7 +530,7 @@
                         <div class="carousel-slide">
                             <div class="grid md:grid-cols-2 gap-8 p-8">
                                 <div>
-                                    <img src="https://images.unsplash.com/photo-1590080876-a371a6b6d7d5?w=500&h=500&fit=crop" alt="Tatuaje Calavera" class="tattoo-image">
+                                    <img src="assets/galeria/mexicano-1.webp" alt="Tatuaje Calavera" class="tattoo-image">
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3 class="text-2xl font-bold mb-4 cyan-glow">Calavera Mexicana</h3>
@@ -524,7 +550,7 @@
                         <div class="carousel-slide">
                             <div class="grid md:grid-cols-2 gap-8 p-8">
                                 <div>
-                                    <img src="https://images.unsplash.com/photo-1585829365519-c21ea54cb626?w=500&h=500&fit=crop" alt="Tatuaje Geométrico" class="tattoo-image">
+                                    <img src="assets/galeria/blackwork-1.jpg" alt="Tatuaje Geométrico" class="tattoo-image">
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3 class="text-2xl font-bold mb-4 cyan-glow">Geometría Sagrada</h3>
@@ -553,7 +579,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="https://wa.me/525512345678" class="cta-button-primary cta-button">
+                    <a href="https://wa.me/529842562365" class="cta-button-primary cta-button">
                         Ver Más Trabajos
                     </a>
                 </div>
@@ -621,7 +647,7 @@
                         <p class="text-gray-300 mb-6">
                             Este año hemos visto un resurgimiento del arte chicano clásico combinado con técnicas modernas. Los diseños geométricos y las líneas minimalistas también están ganando popularidad entre los clientes más jóvenes.
                         </p>
-                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                        <a href="https://wa.me/529842562365" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
                     </div>
 
                     <div class="blog-card">
@@ -630,7 +656,7 @@
                         <p class="text-gray-300 mb-6">
                             El tatuaje chicano tiene raíces profundas en la cultura mexicana y la historia de resistencia. Desde sus orígenes en las prisiones hasta convertirse en un arte respetado, esta tradición sigue evolucionando.
                         </p>
-                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                        <a href="https://wa.me/529842562365" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
                     </div>
 
                     <div class="blog-card">
@@ -639,7 +665,7 @@
                         <p class="text-gray-300 mb-6">
                             Elegir tu primer tatuaje es una decisión importante. Te doy algunos consejos para asegurar que tu experiencia sea memorable y que el resultado sea exactamente lo que imaginaste.
                         </p>
-                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                        <a href="https://wa.me/529842562365" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
                     </div>
 
                     <div class="blog-card">
@@ -648,12 +674,12 @@
                         <p class="text-gray-300 mb-6">
                             La tecnología en el mundo del tatuaje ha avanzado significativamente. Las nuevas máquinas rotativas ofrecen mayor precisión y comodidad tanto para el artista como para el cliente.
                         </p>
-                        <a href="https://wa.me/525512345678" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
+                        <a href="https://wa.me/529842562365" class="text-cyan-400 hover:text-cyan-300 transition">Leer más →</a>
                     </div>
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="https://wa.me/525512345678" class="cta-button">
+                    <a href="https://wa.me/529842562365" class="cta-button">
                         Ver Todos los Artículos
                     </a>
                 </div>
@@ -727,7 +753,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="https://wa.me/525512345678" class="cta-button-primary cta-button">
+                    <a href="https://wa.me/529842562365" class="cta-button-primary cta-button">
                         Contacta para Más Información
                     </a>
                 </div>
@@ -755,9 +781,9 @@
                     </div>
                     <div>
                         <h4 class="font-bold mb-4 cyan-glow">Contacto</h4>
-                        <p class="text-gray-400 mb-2">📱 +52 55 1234 5678</p>
+                        <p class="text-gray-400 mb-2">📱 +52 984 256 2365</p>
                         <p class="text-gray-400 mb-4">📧 info@baxtostilo.com</p>
-                        <a href="https://wa.me/525512345678" class="cta-button text-sm">
+                        <a href="https://wa.me/529842562365" class="cta-button text-sm">
                             WhatsApp
                         </a>
                     </div>
@@ -792,7 +818,7 @@
     </div>
 
     <!-- Quick Contact Button -->
-    <a href="https://wa.me/525512345678" target="_blank" class="quick-contact-btn" title="Contacto Rápido por WhatsApp">
+    <a href="https://wa.me/529842562365" target="_blank" class="quick-contact-btn" title="Contacto Rápido por WhatsApp">
         💬
     </a>
 
