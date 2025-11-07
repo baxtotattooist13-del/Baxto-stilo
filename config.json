@@ -1,0 +1,109 @@
+{
+    "artist": {
+        "name": "BAXTO",
+        "studioName": "BAXTO Stilo",
+        "tagline": "Cada historia en BAXTO Stilo se transforma en obras de arte que se lucen en la piel.",
+        "description": "Artista del tatuaje con m\u00e1s de 10 a\u00f1os de experiencia en el mundo del arte corporal.",
+        "yearsExperience": 10,
+        "tattoosCompleted": 500,
+        "satisfactionRate": 100
+    },
+    "contact": {
+        "whatsapp": "525512345678",
+        "email": "info@baxtostilo.com",
+        "phone": "+52 55 1234 5678"
+    },
+    "social": {
+        "instagram": "https://instagram.com",
+        "facebook": "https://facebook.com",
+        "tiktok": "https://tiktok.com"
+    },
+    "colors": {
+        "primary": "#00ffff",
+        "secondary": "#0a0a0a",
+        "accent": "#ffffff",
+        "darkBg": "#0a0a0a",
+        "lightText": "#ffffff",
+        "mutedText": "#999999"
+    },
+    "portfolio": [
+        {
+            "id": 1,
+            "title": "\u00c1guila Chicana",
+            "description": "Un dise\u00f1o cl\u00e1sico del arte chicano que representa la libertad y la fuerza. Realizado con l\u00edneas precisas y sombreado detallado.",
+            "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&h=500&fit=crop",
+            "tags": [
+                "Chicano",
+                "Grande",
+                "Color"
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Rosa G\u00f3tica",
+            "description": "Una rosa delicada con toques g\u00f3ticos que representa la belleza en la oscuridad.",
+            "image": "https://images.unsplash.com/photo-1598808503676-6b6b0d11b541?w=500&h=500&fit=crop",
+            "tags": [
+                "G\u00f3tico",
+                "Mediano",
+                "B&N"
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Calavera Mexicana",
+            "description": "Un ic\u00f3nico dise\u00f1o de calavera mexicana con flores y detalles ornamentales.",
+            "image": "https://images.unsplash.com/photo-1590080876-a371a6b6d7d5?w=500&h=500&fit=crop",
+            "tags": [
+                "Mexicano",
+                "Grande",
+                "Color"
+            ]
+        },
+        {
+            "id": 4,
+            "title": "Geometr\u00eda Sagrada",
+            "description": "Dise\u00f1o geom\u00e9trico moderno que fusiona la precisi\u00f3n matem\u00e1tica con el arte del tatuaje.",
+            "image": "https://images.unsplash.com/photo-1585829365519-c21ea54cb626?w=500&h=500&fit=crop",
+            "tags": [
+                "Geom\u00e9trico",
+                "Peque\u00f1o",
+                "B&N"
+            ]
+        }
+    ],
+    "blog": [
+        {
+            "id": 1,
+            "date": "5 de Noviembre, 2025",
+            "title": "Tendencias de Tatuajes 2025",
+            "excerpt": "Este a\u00f1o hemos visto un resurgimiento del arte chicano cl\u00e1sico combinado con t\u00e9cnicas modernas."
+        },
+        {
+            "id": 2,
+            "date": "28 de Octubre, 2025",
+            "title": "La Historia del Tatuaje Chicano",
+            "excerpt": "El tatuaje chicano tiene ra\u00edces profundas en la cultura mexicana y la historia de resistencia."
+        },
+        {
+            "id": 3,
+            "date": "15 de Octubre, 2025",
+            "title": "C\u00f3mo Elegir tu Primer Tatuaje",
+            "excerpt": "Elegir tu primer tatuaje es una decisi\u00f3n importante. Te doy algunos consejos para asegurar que tu experiencia sea memorable."
+        },
+        {
+            "id": 4,
+            "date": "1 de Octubre, 2025",
+            "title": "Innovaciones en M\u00e1quinas de Tatuaje",
+            "excerpt": "La tecnolog\u00eda en el mundo del tatuaje ha avanzado significativamente."
+        }
+    ],
+    "features": {
+        "enableDeviceOrientation": true,
+        "enableAutoCarousel": true,
+        "carouselInterval": 8000,
+        "particleCount": 150,
+        "needleCount": 20,
+        "enableAnimations": true
+    }
+}
