@@ -26,6 +26,14 @@ function showSlide(n) {
     
     // Agregar clase active al slide actual
     slides[currentSlide].classList.add('active');
+
+    // Forzar la recarga de la imagen para asegurar que se muestre
+    const img = slides[currentSlide].querySelector('.tattoo-image');
+    if (img) {
+        const src = img.src;
+        img.src = ''; // Limpiar la fuente
+        img.src = src; // Restablecer la fuente para forzar la recarga
+    }
     
     // Agregar clase active al dot actual
     dots[currentSlide].classList.add('active');
